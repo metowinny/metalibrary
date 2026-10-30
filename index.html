@@ -1,28 +1,32 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Название сайта</title>
-<link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100d32">
+  <meta name="description" content="outofsite — личный архив стихотворений, рассказов, песен и публицистики Винни Метонимия.">
+  <title>outofsite</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-<div class="bubbles" id="bubbles" aria-hidden="true"></div>
+  <div class="ambient" id="ambient" aria-hidden="true"></div>
+  <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
 
-<div class="wrap">
-  <header class="plaque">
-    <a class="plaque-title" href="#/">Название сайта</a>
-    <span class="plaque-sub">подзаголовок-заглушка</span>
-  </header>
+  <div class="wrap">
+    <header class="plaque">
+      <a class="plaque-title" id="brand" href="#/">outofsite</a>
+      <nav class="socials" id="socials" aria-label="Другие страницы автора"></nav>
+    </header>
+    <nav class="crumbs" id="crumbs" aria-label="Навигационная цепочка"></nav>
+    <main id="app" tabindex="-1"></main>
+    <footer class="foot" id="foot"></footer>
+  </div>
 
-  <nav class="crumbs" id="crumbs" aria-label="Путь"></nav>
-
-  <main id="app"></main>
-
-  <footer class="foot" id="foot"></footer>
-</div>
-
-<script src="data/library.js"></script>
-<script src="assets/js/main.js"></script>
+  <script src="data/library.js"></script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
