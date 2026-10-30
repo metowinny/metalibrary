@@ -339,18 +339,31 @@ button { cursor: pointer; }
   hyphens: auto;
   -webkit-hyphens: auto;
 }
-.reader--prose .text-body > p:first-of-type { text-indent: 0; }
-.reader--prose .text-body > p:first-of-type::first-letter {
+/* Важна та же специфичность, что у правила красных строк выше:
+   иначе браузер всё равно добавляет отступ перед буквицей. */
+.reader--prose .text-body > p:first-of-type:not(.verse):not(.note):not(.signature) {
+  text-indent: 0;
+}
+/* Буквица обтекается первыми двумя строками абзаца, а не висит отдельно сбоку. */
+.reader--prose .text-body > p:first-of-type:not(.verse):not(.note):not(.signature)::first-letter {
   float: left;
-  margin: .10em .13em 0 0;
-  font-size: 3.3em;
-  font-weight: 700;
-  line-height: .72;
-  color: #c9ecff;
-  text-shadow: 1px 2px rgba(77,54,169,.85), 0 0 14px rgba(136,209,255,.5);
+  margin: .08em .13em 0 0;
+  padding: 0;
+  font-size: 3em;
+  font-weight: 500;
+  line-height: 1.04;
+  color: #c3a5ff;
+  text-shadow: 1px 2px rgba(77,54,169,.75), 0 0 13px rgba(166,117,255,.38);
 }
 /* На малой ширине длинные пробелы при выключке выглядят плохо. */
-@media (max-width: 460px) { .reader--prose .text-body > p { hyphens: auto; } }
+@media (max-width: 460px) {
+  .reader--prose .text-body > p { hyphens: auto; }
+  .reader--prose .text-body > p:first-of-type:not(.verse):not(.note):not(.signature)::first-letter {
+    font-size: 2.85em;
+    line-height: 1.1;
+    margin-right: .12em;
+  }
+}
 
 /* Небольшой, но заметный декоративный разделитель в духе старых сайтов. */
 .text-body hr, .text-body .divider {
