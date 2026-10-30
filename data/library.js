@@ -2,7 +2,6 @@ window.LIBRARY = {
   site: {
     title: "outofsite",
     tagline: "Малые нерождённые миры.",
-    intro: "Здесь будет короткое приветствие. Заглушка.",
     footer: "© Винни Метонимий, 2026"
   },
   root: {
