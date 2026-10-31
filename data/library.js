@@ -1,16 +1,13 @@
-// Вся информация о сайте и его разделах живёт здесь.
-// Ссылки заполняются в site.links. Пустые строки оставляют красивые, но неактивные заглушки.
-// Чтобы не показывать страницу среди разделов, добавьте hidden: true (ссылка останется доступна по адресу).
 window.LIBRARY = {
   site: {
     title: "outofsite",
-    tagline: "Малые нерождённые миры.",
-    intro: "Личная коллекция стихотворений, песен, рассказов и других текстов вне общего сеттинга.",
+    tagline: "малые нерождённые миры",
+    intro: "Архив стихотворений, песен, рассказов и других текстов.",
     footer: "© Винни Метонимий, 2026",
     links: {
-      tribunal: "", // Например: "https://example.com/tribunal"
-      vk: "",       // Например: "https://vk.com/yourpage"
-      telegram: ""  // Например: "https://t.me/yourpage"
+      tribunal: "https://metowinny.github.io/metowinny/index.html",
+      vk: "https://vk.ru/meto.winny",
+      telegram: "https://t.me/metowinny"
     }
   },
   root: {
