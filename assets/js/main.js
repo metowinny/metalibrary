@@ -60,7 +60,6 @@
     try {
       const size = parseFloat(localStorage.getItem('outofsite-font-size'));
       if (size >= 0.85 && size <= 1.7) rootEl.style.setProperty('--fs', size + 'rem');
-      // Сохранённый размер из предыдущей версии сайта.
       else {
         const old = parseFloat(localStorage.getItem('lib-fs'));
         if (old >= 0.85 && old <= 1.7) rootEl.style.setProperty('--fs', old + 'rem');
@@ -87,7 +86,7 @@
     const url = externalURL((lib.site.links || {})[key]);
     const cls = 'social-link' + (prominent ? ' social-featured' : '') + (!url ? ' is-placeholder' : '');
     const label = url ? name + ' (откроется в новой вкладке)' : name + ': ссылка пока не добавлена';
-    const inner = prominent ? '<span class="social-pixel" aria-hidden="true">✦</span><span>Трибунал</span><span aria-hidden="true">↗</span>' : '<span aria-hidden="true">' + abbr + '</span>';
+    const inner = prominent ? '<span class="social-pixel" aria-hidden="true">✦</span><span>Нулевой Трибунал</span><span aria-hidden="true">↗</span>' : '<span aria-hidden="true">' + abbr + '</span>';
     if (!url) return '<span class="' + cls + '" aria-label="' + esc(label) + '" title="' + esc(label) + '">' + inner + '</span>';
     return '<a class="' + cls + '" href="' + esc(url) + '" aria-label="' + esc(label) + '" title="' + esc(name) + '" target="_blank" rel="noopener noreferrer">' + inner + '</a>';
   }
@@ -225,7 +224,6 @@
     reading = true;
 
     const mine = ++requestToken;
-    // Имя файла задаётся автором в library.js, а не читателем через URL.
     if (!/^[\w-]+\.html$/.test(node.file || '')) {
       document.getElementById('text-body').innerHTML = '<p class="note">Некорректное имя файла произведения.</p>';
       return;
@@ -285,7 +283,6 @@
 
   function makeAmbient() {
     const box = document.getElementById('ambient');
-    // Маленькие статичные/медленные искорки вместо крупных пузырей.
     for (let i = 0; i < 12; i++) {
       const dot = document.createElement('span');
       dot.className = 'ambient-dot';
