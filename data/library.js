@@ -24,7 +24,7 @@ window.LIBRARY = {
             title: "Сборник «Метонимии»",
             desc: "Грязная игра слов и образов",
             children: [
-              { id: "m-1", title: "Первое стихотворение", file: "poem-1.html", meta: "стихотворение" },
+              { id: "m-1", title: "Дихотомии", file: "poem-1.html", meta: "стихотворение" },
               { id: "m-2", title: "Второе стихотворение", file: "poem-2.html", meta: "стихотворение" }
             ]
           }
