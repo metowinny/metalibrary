@@ -37,7 +37,7 @@ window.LIBRARY = {
         title: "/рассказы",
         desc: "Библиотека зарисовок с неизвестных натур",
         children: [
-          { id: "story-1", title: "Название рассказа", file: "story-1.html", meta: "рассказ" }
+          { id: "story-1", title: "Название рассказа", file: "story-1.html", meta: "рассказ", hidden: true }
         ]
       },
       {
@@ -45,7 +45,7 @@ window.LIBRARY = {
         title: "/тексты_песен",
         desc: "Тексты глухих песен немых авторов",
         children: [
-          { id: "song-1", title: "Название песни", file: "song-1.html", meta: "песня" }
+          { id: "song-1", title: "Название песни", file: "song-1.html", meta: "песня", hidden: true }
         ]
       },
       {
@@ -53,7 +53,7 @@ window.LIBRARY = {
         title: "/публицистика",
         desc: "Очерки о том, о чём лучше промолчать",
         children: [
-          { id: "essay-1", title: "Название статьи", file: "essay-1.html", meta: "статья" }
+          { id: "essay-1", title: "Название статьи", file: "essay-1.html", meta: "статья", hidden: true }
         ]
       },
       {
