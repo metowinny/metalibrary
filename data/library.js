@@ -25,7 +25,8 @@ window.LIBRARY = {
             desc: "Грязная игра слов и образов",
             children: [
               { id: "m-1", title: "Дихотомии", file: "poem-1.html", meta: "стихотворение" },
-              { id: "m-2", title: "Зевгма", file: "poem-2.html", meta: "стихотворение" }
+              { id: "m-2", title: "Зевгма", file: "poem-2.html", meta: "стихотворение" },
+              { id: "m-3", title: "Кубик Рубика", file: "poem-2.html", meta: "стихотворение" }
             ]
           }
         ]
