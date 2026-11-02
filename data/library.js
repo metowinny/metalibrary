@@ -37,7 +37,7 @@ window.LIBRARY = {
         title: "/рассказы",
         desc: "Библиотека зарисовок с неизвестных натур",
         children: [
-          { id: "story-1", title: "Прошлый раз", file: "story-1.html", meta: "рассказ", hidden: true }
+          { id: "story-1", title: "Прошлый раз", file: "story-1.html", meta: "рассказ" }
         ]
       },
       {
