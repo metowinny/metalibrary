@@ -1,30 +1,30 @@
 window.GALLERY = {
-  intro: "Портфолио: костюмы, предметы, медальки, иллюстрации и фоны.",
+  intro: "Художественное портфолио",
   profile: {
     name: "Винни Метонимий",
     pronouns: "он/его",
-    role: "художник сайтовой команды CatWar",
+    role: "Эхосказ [1601504]",
     avatar: "",
-    updated: "27.07.26",
+    updated: "04.11.26",
     orders: [
       { label: "Индивидуальные заказы", open: false },
       { label: "Сайтовые и фракционные заказы", open: true }
     ],
     links: [
       { label: "Carrd", url: "https://met0w1nny.carrd.co/" },
-      { label: "CatWar", url: "" }
+      { label: "CatWar", url: "https://catwar.net/cat1601504" }
     ]
   },
   sections: [
     {
       id: "costumes",
       title: "/костюмы",
-      desc: "Костюмы для котов, 200×300",
+      desc: "Костюмы на 200х300",
       layout: "sprites",
       dir: "images/art/demo/",
       w: 200,
       h: 300,
-      facts: ["Поверх модельки: от 400р", "Перекрывающий: от 600р"],
+      facts: ["Дополняющий: от 400р", "Перекрывающий: от 600р"],
       groups: [
         {
           title: "Поверх модельки",
@@ -46,7 +46,7 @@ window.GALLERY = {
     {
       id: "items",
       title: "/предметы",
-      desc: "Предметы для котов",
+      desc: "Мелкоформатки (в основном предметы на 70х70 и ачивки)",
       layout: "icons",
       dir: "images/art/demo/",
       w: 70,
@@ -65,7 +65,7 @@ window.GALLERY = {
     {
       id: "medals",
       title: "/медальки",
-      desc: "Медальки и значки",
+      desc: "Медальки и другие значки",
       layout: "icons",
       dir: "images/art/demo/",
       w: 70,
@@ -95,7 +95,7 @@ window.GALLERY = {
     {
       id: "backgrounds",
       title: "/фоны",
-      desc: "Фоны, 1000×1000",
+      desc: "Фоны на 1000×1000",
       layout: "tiles",
       dir: "images/art/demo/",
       w: 1000,
