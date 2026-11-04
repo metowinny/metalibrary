@@ -784,7 +784,7 @@ html.lb-open { overflow: hidden; }
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: 0 18px;
-  margin-top: 18px;
+  margin: 0 0 18px;
   padding: 18px 20px;
   border: 1px solid rgba(160, 196, 255, .42);
   border-radius: 14px;
