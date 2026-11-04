@@ -72,7 +72,7 @@ window.GALLERY = {
       w: 70,
       h: 70,
       items: [
-        { src: "medal1.svg", title: "«Старательный помощник» (КПВ)" }
+        { src: "medal1.png", title: "«Старательный помощник» (КПВ)" }
       ]
     },
     {
