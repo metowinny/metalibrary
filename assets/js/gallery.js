@@ -201,9 +201,6 @@ window.createArt = function (ctx) {
     const p = data.profile || {};
     const avatar = p.avatar ? '<img src="' + esc(encodeURI(p.avatar)) + '" alt="' + esc(p.name || '') + '">' : '<span class="avatar-glyph" aria-hidden="true">✦</span>';
     const rows = [];
-    if (p.name) rows.push(['Имя', esc(p.name)]);
-    if (p.pronouns) rows.push(['Местоимения', esc(p.pronouns)]);
-    if (p.role) rows.push(['Роль', esc(p.role)]);
     (p.orders || []).forEach(function (order) {
       rows.push([esc(order.label), '<span class="lamp ' + (order.open ? 'on' : 'off') + '" aria-hidden="true"></span>' + (order.open ? 'открыты' : 'закрыты')]);
     });
@@ -216,6 +213,7 @@ window.createArt = function (ctx) {
         '<div class="profile-card">' +
           '<div class="profile-side"><div class="avatar">' + avatar + '</div>' +
             (p.name ? '<div class="profile-name">' + esc(p.name) + '</div>' : '') +
+            (p.pronouns ? '<div class="profile-pronouns">' + esc(p.pronouns) + '</div>' : '') +
             (p.role ? '<div class="profile-role">' + esc(p.role) + '</div>' : '') +
           '</div>' +
           '<dl class="profile-rows">' + rows.map(function (row) {
