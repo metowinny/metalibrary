@@ -278,10 +278,11 @@
       crumbs.innerHTML = '';
       renderNotFound();
     } else {
-      renderCrumbs(chain, path);
       const node = chain[chain.length - 1];
+      const anchored = !!art && !!node.gallery;
+      renderCrumbs(anchored ? chain.slice(0, -1) : chain, anchored ? path.slice(0, -1) : path);
       if (path.length === 0) renderHome();
-      else if (art && node.gallery) art.gallery(node, path);
+      else if (anchored) art.hub(chain[chain.length - 2], path);
       else if (art && node.art) art.hub(node, path);
       else if (node.children) renderSection(node, path);
       else if (node.file) renderText(chain, path);
@@ -289,6 +290,7 @@
     }
     progress.hidden = !reading;
     window.scrollTo(0, 0);
+    if (art) art.afterRoute();
     updateProgress();
   }
 

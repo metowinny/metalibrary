@@ -7,8 +7,12 @@ window.createArt = function (ctx) {
   const href = ctx.href;
   const app = ctx.app;
   const LAYOUTS = { sprites: true, icons: true, masonry: true, tiles: true };
-  const ZOOM_KEY = 'outofsite-art-zoom';
+  const ZOOM_KEY = 'outofsite-art-zooms';
   const lb = { el: null, items: [], index: 0, opener: null, touchX: null };
+  let nodes = {};
+  let pending = '';
+  let lastY = 0;
+  let ticking = false;
 
   function plural(n, one, few, many) {
     const a = Math.abs(n) % 100;
@@ -63,7 +67,9 @@ window.createArt = function (ctx) {
     if (!hub) return;
     hub.children = (data.sections || []).map(function (section) {
       const items = normalize(section);
+      const layout = LAYOUTS[section.layout] ? section.layout : 'masonry';
       return {
+        pixel: isPixel(section, layout),
         id: section.id,
         title: section.title,
         desc: section.desc,
@@ -78,16 +84,17 @@ window.createArt = function (ctx) {
     hub.total = total;
   }
 
-  function readZoom() {
+  function readZooms() {
     try {
-      const z = parseInt(localStorage.getItem(ZOOM_KEY), 10);
-      if (z >= 1 && z <= 4) return z;
-    } catch (e) {}
-    return 2;
+      const v = JSON.parse(localStorage.getItem(ZOOM_KEY) || '{}');
+      return v && typeof v === 'object' ? v : {};
+    } catch (e) { return {}; }
   }
 
-  function saveZoom(z) {
-    try { localStorage.setItem(ZOOM_KEY, String(z)); } catch (e) {}
+  function saveZoom(id, z) {
+    const all = readZooms();
+    all[id] = z;
+    try { localStorage.setItem(ZOOM_KEY, JSON.stringify(all)); } catch (e) {}
   }
 
   function itemHTML(item, index, layout) {
@@ -113,7 +120,7 @@ window.createArt = function (ctx) {
     let currentGroup = null;
     const flush = function () {
       if (!run.length) return;
-      if (currentGroup) html += '<h2 class="art-sub">❯ ' + esc(currentGroup) + '</h2>';
+      if (currentGroup) html += '<h3 class="art-sub">❯ ' + esc(currentGroup) + '</h3>';
       html += '<div class="' + cls + '"' + cell + '>' + run.join('') + '</div>';
       run = [];
     };
@@ -128,19 +135,13 @@ window.createArt = function (ctx) {
     return html;
   }
 
-  function tabsHTML(node) {
-    const hub = hubNode();
-    if (!hub) return '';
-    const tabs = (hub.children || []).filter(function (c) { return !c.hidden; });
-    return '<nav class="art-tabs" aria-label="Разделы портфолио">' + tabs.map(function (tab) {
-      const here = tab.id === node.id;
-      return '<a class="art-tab' + (here ? ' is-current' : '') + '" href="' + href(['art', tab.id]) + '"' + (here ? ' aria-current="page"' : '') + '>' + esc(tab.title.replace(/^\//, '')) + '</a>';
-    }).join('') + '</nav>';
-  }
-
-  function factsHTML(section) {
+  function priceHTML(section) {
     if (!section.facts || !section.facts.length) return '';
-    return '<ul class="art-facts">' + section.facts.map(function (line) { return '<li>' + esc(line) + '</li>'; }).join('') + '</ul>';
+    return '<div class="art-price"><span class="art-price-title">Прайс</span>' + section.facts.map(function (line) {
+      const at = line.indexOf(':');
+      if (at < 0) return '<div class="price-line only"><span class="price-value">' + esc(line) + '</span></div>';
+      return '<div class="price-line"><span class="price-label">' + esc(line.slice(0, at)) + '</span><span class="price-value">' + esc(line.slice(at + 1).trim()) + '</span></div>';
+    }).join('') + '</div>';
   }
 
   function zoomHTML(zoom) {
@@ -151,41 +152,24 @@ window.createArt = function (ctx) {
     return '<div class="art-tools" role="group" aria-label="Масштаб миниатюр"><span>Масштаб</span>' + buttons + '</div>';
   }
 
-  function gallery(node, path) {
+  function sectionHTML(node, zooms) {
     const section = node.gallery;
     const layout = LAYOUTS[section.layout] ? section.layout : 'masonry';
-    lb.items = node.items;
-    const zoom = readZoom();
-    app.innerHTML =
-      '<section class="panel section-panel art-panel" style="--zoom:' + zoom + '">' +
-        '<p class="eyebrow tiny">/art/' + esc(node.id) + ' · ' + esc(countLabel(node.items.length)) + '</p>' +
-        '<h1 class="page-title">' + esc(node.title) + '</h1>' +
-        (node.desc ? '<p class="page-desc">' + esc(node.desc) + '</p>' : '') +
-        tabsHTML(node) +
-        factsHTML(section) +
-        (layout === 'icons' && node.items.length ? zoomHTML(zoom) : '') +
-        (node.items.length ? boardHTML(node.items, layout, section) : '<p class="empty">Здесь пока ничего нет. [ empty directory ]</p>') +
-        '<nav class="section-actions" aria-label="Навигация по разделу">' +
-          '<a class="btn" href="' + href(path.slice(0, -1)) + '">‹ Назад</a>' +
-        '</nav>' +
-      '</section>';
-    document.title = node.title + ' — ' + lib.site.title;
+    const zoom = parseInt(zooms[node.id], 10) || section.zoom || 2;
+    const meta = priceHTML(section) + (layout === 'icons' && node.items.length ? zoomHTML(zoom) : '');
+    return '<section class="art-section" id="art-' + esc(node.id) + '" data-art-section="' + esc(node.id) + '" style="--zoom:' + zoom + '">' +
+      '<header class="art-head"><h2 class="art-title">' + esc(node.title) + '</h2><span class="art-count">' + esc(node.meta) + '</span></header>' +
+      (node.desc ? '<p class="art-desc">' + esc(node.desc) + '</p>' : '') +
+      (meta ? '<div class="art-meta">' + meta + '</div>' : '') +
+      (node.items.length ? boardHTML(node.items, layout, section) : '<p class="empty">Здесь пока ничего нет. [ empty directory ]</p>') +
+      '<div class="art-top"><a class="btn small" href="' + href(['art']) + '" data-art-jump="">↑ к началу</a></div>' +
+    '</section>';
   }
 
-  function priceHTML(hub) {
-    const rows = [];
-    (hub.children || []).forEach(function (child) {
-      const facts = child.gallery && child.gallery.facts;
-      if (!facts || !facts.length) return;
-      rows.push('<div class="price-group"><a class="price-name" href="' + href(['art', child.id]) + '">' + esc(child.title) + '</a><div class="price-lines">' +
-        facts.map(function (line) {
-          const at = line.indexOf(':');
-          if (at < 0) return '<div class="price-line"><span class="price-value">' + esc(line) + '</span></div>';
-          return '<div class="price-line"><span class="price-label">' + esc(line.slice(0, at)) + '</span><span class="price-value">' + esc(line.slice(at + 1).trim()) + '</span></div>';
-        }).join('') + '</div></div>');
-    });
-    if (!rows.length) return '';
-    return '<h2 class="art-sub">❯ Прайс</h2><div class="price-board">' + rows.join('') + '</div>';
+  function navHTML(sections) {
+    return '<nav class="art-nav" aria-label="Разделы портфолио">' + sections.map(function (node) {
+      return '<a class="art-tab" href="' + href(['art', node.id]) + '" data-art-jump="' + esc(node.id) + '">' + esc(node.title.replace(/^\//, '')) + '</a>';
+    }).join('') + '</nav>';
   }
 
   function linksHTML(links) {
@@ -199,7 +183,12 @@ window.createArt = function (ctx) {
 
   function hub(node, path) {
     const p = data.profile || {};
-    const avatar = p.avatar ? '<img src="' + esc(encodeURI(p.avatar)) + '" alt="' + esc(p.name || '') + '">' : '<span class="avatar-glyph" aria-hidden="true">✦</span>';
+    const sections = (node.children || []).filter(function (c) { return !c.hidden; });
+    const zooms = readZooms();
+    nodes = {};
+    sections.forEach(function (c) { nodes[c.id] = c; });
+    pending = path[1] && nodes[path[1]] ? path[1] : '';
+    const avatar = p.avatar ? '<div class="avatar"><img src="' + esc(encodeURI(p.avatar)) + '" alt="' + esc(p.name || '') + '"></div>' : '';
     const rows = [];
     (p.orders || []).forEach(function (order) {
       rows.push([esc(order.label), '<span class="lamp ' + (order.open ? 'on' : 'off') + '" aria-hidden="true"></span>' + (order.open ? 'открыты' : 'закрыты')]);
@@ -211,24 +200,71 @@ window.createArt = function (ctx) {
         '<h1 class="page-title">' + esc(node.title) + '</h1>' +
         '<p class="page-desc">' + esc(data.intro || node.desc || '') + '</p>' +
         '<div class="profile-card">' +
-          '<div class="profile-side"><div class="avatar">' + avatar + '</div>' +
-            (p.name ? '<div class="profile-name">' + esc(p.name) + '</div>' : '') +
-            (p.pronouns ? '<div class="profile-pronouns">' + esc(p.pronouns) + '</div>' : '') +
-            (p.role ? '<div class="profile-role">' + esc(p.role) + '</div>' : '') +
+          '<div class="profile-head">' + avatar +
+            '<div class="profile-id">' +
+              (p.name ? '<div class="profile-name">' + esc(p.name) + (p.pronouns ? '<span class="profile-pronouns">' + esc(p.pronouns) + '</span>' : '') + '</div>' : '') +
+              (p.role ? '<div class="profile-role">' + esc(p.role) + '</div>' : '') +
+            '</div>' +
           '</div>' +
-          '<dl class="profile-rows">' + rows.map(function (row) {
+          (rows.length ? '<dl class="profile-rows">' + rows.map(function (row) {
             return '<div><dt>' + row[0] + '</dt><dd>' + row[1] + '</dd></div>';
-          }).join('') + '</dl>' +
+          }).join('') + '</dl>' : '') +
         '</div>' +
         linksHTML(p.links) +
-        priceHTML(node) +
-        '<h2 class="art-sub">❯ Разделы</h2>' +
-        ctx.list(node, path) +
+        navHTML(sections) +
+        sections.map(function (c) { return sectionHTML(c, zooms); }).join('') +
         '<nav class="section-actions" aria-label="Навигация по разделу">' +
-          '<a class="btn" href="' + href(path.slice(0, -1)) + '">‹ Назад</a>' +
+          '<a class="btn" href="' + href([]) + '">‹ Назад</a>' +
         '</nav>' +
       '</section>';
     document.title = node.title + ' — ' + lib.site.title;
+  }
+
+  function navOffset() {
+    const nav = document.querySelector('.art-nav');
+    return (nav ? nav.offsetHeight : 0) + 24;
+  }
+
+  function jump(id, smooth) {
+    let y = 0;
+    if (id) {
+      const el = document.getElementById('art-' + id);
+      if (!el) return;
+      y = Math.max(0, el.getBoundingClientRect().top + window.scrollY - navOffset());
+    }
+    lastY = y;
+    window.scrollTo({ top: y, behavior: smooth ? 'smooth' : 'instant' });
+  }
+
+  function updateCurrent() {
+    const tabs = document.querySelectorAll('.art-tab');
+    if (!tabs.length) return;
+    const limit = navOffset() + 12;
+    let current = '';
+    document.querySelectorAll('.art-section').forEach(function (el) {
+      if (el.getBoundingClientRect().top <= limit) current = el.getAttribute('data-art-section');
+    });
+    tabs.forEach(function (tab) {
+      const here = tab.getAttribute('data-art-jump') === current;
+      tab.classList.toggle('is-current', here);
+      if (here) tab.setAttribute('aria-current', 'location');
+      else tab.removeAttribute('aria-current');
+    });
+  }
+
+  function afterRoute() {
+    updateCurrent();
+    if (!pending) return;
+    const id = pending;
+    pending = '';
+    jump(id, false);
+    updateCurrent();
+    setTimeout(function () {
+      if (document.getElementById('art-' + id) && Math.abs(window.scrollY - lastY) < 4) {
+        jump(id, false);
+        updateCurrent();
+      }
+    }, 500);
   }
 
   function buildLightbox() {
@@ -306,19 +342,17 @@ window.createArt = function (ctx) {
 
   function open(index, opener) {
     if (!lb.el) buildLightbox();
-    const nodePixel = currentPixel();
-    lb.items.forEach(function (item) { item.pixel = nodePixel; });
+    const holder = opener && opener.closest('[data-art-section]');
+    const node = holder ? nodes[holder.getAttribute('data-art-section')] : null;
+    if (!node) return;
+    lb.items = node.items;
+    lb.items.forEach(function (item) { item.pixel = node.pixel; });
     lb.index = index;
     lb.opener = opener || null;
     lb.el.hidden = false;
     document.documentElement.classList.add('lb-open');
     show();
     lb.el.querySelector('.lb-close').focus();
-  }
-
-  function currentPixel() {
-    const grid = document.querySelector('.art-grid');
-    return !!(grid && grid.classList.contains('is-pixel'));
   }
 
   function step(delta) {
@@ -362,12 +396,22 @@ window.createArt = function (ctx) {
     const zoomBtn = event.target.closest('[data-art-zoom]');
     if (zoomBtn) {
       const z = parseInt(zoomBtn.getAttribute('data-art-zoom'), 10);
-      const panel = zoomBtn.closest('.art-panel');
-      if (panel) panel.style.setProperty('--zoom', z);
+      const holder = zoomBtn.closest('[data-art-section]');
+      if (holder) {
+        holder.style.setProperty('--zoom', z);
+        saveZoom(holder.getAttribute('data-art-section'), z);
+      }
       zoomBtn.parentNode.querySelectorAll('[data-art-zoom]').forEach(function (b) {
         b.setAttribute('aria-pressed', b === zoomBtn ? 'true' : 'false');
       });
-      saveZoom(z);
+      return;
+    }
+    const jumpLink = event.target.closest('[data-art-jump]');
+    if (jumpLink) {
+      event.preventDefault();
+      const id = jumpLink.getAttribute('data-art-jump');
+      jump(id, true);
+      try { history.replaceState(null, '', href(id ? ['art', id] : ['art'])); } catch (e) {}
     }
   });
 
@@ -389,6 +433,14 @@ window.createArt = function (ctx) {
   }, true);
 
   window.addEventListener('resize', fit);
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(function () {
+      ticking = false;
+      updateCurrent();
+    });
+  }, { passive: true });
 
-  return { attach: attach, hub: hub, gallery: gallery, close: close };
+  return { attach: attach, hub: hub, afterRoute: afterRoute, close: close };
 };
