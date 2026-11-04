@@ -154,6 +154,22 @@
     return '<button type="button" class="btn btn-quiet" data-random>✧ Случайный текст</button>';
   }
 
+    function authorCard() {
+    const a = lib.site.author;
+    if (!a) return '';
+    const paragraphs = [].concat(a.about || []).filter(Boolean);
+    const avatar = a.avatar ? '<img src="' + esc(encodeURI(a.avatar)) + '" alt="' + esc(a.name || '') + '">' : '<span aria-hidden="true">✦</span>';
+    return '<aside class="author-card" aria-label="Об авторе">' +
+      '<div class="author-avatar">' + avatar + '</div>' +
+      '<div class="author-id">' +
+        '<div class="author-label">/about</div>' +
+        (a.name ? '<div class="author-name">' + esc(a.name) + '</div>' : '') +
+        (a.nick ? '<div class="author-nick">' + esc(a.nick) + '</div>' : '') +
+      '</div>' +
+      (paragraphs.length ? '<div class="author-about">' + paragraphs.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') + '</div>' : '') +
+    '</aside>';
+  }
+
   function renderHome() {
     const count = textEntries(lib.root, []).length;
     app.innerHTML =
@@ -172,7 +188,7 @@
           '<input id="library-search" class="search-input" type="search" placeholder="Название, слово, раздел…" autocomplete="off" spellcheck="false">' +
           randomButton() +
         '</div><div id="search-results" class="search-results" aria-live="polite"></div>' +
-      '</section>';
+      '</section>' + authorCard();
     document.title = lib.site.title + ' — ' + lib.site.tagline;
   }
 
