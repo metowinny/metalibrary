@@ -53,18 +53,14 @@ window.GALLERY = {
       title: "/предметы",
       desc: "Мелкоформатки (в основном предметы на 70х70 и ачивки)",
       layout: "icons",
-      dir: "images/art/demo/",
+      dir: "images/art/small/",
       w: 70,
       h: 70,
       items: [
-        { src: "item-1.svg", title: "Демо: предмет 1" },
-        { src: "item-2.svg", title: "Демо: предмет 2" },
-        { src: "item-3.svg", title: "Демо: предмет 3" },
-        { src: "item-4.svg", title: "Демо: предмет 4" },
-        { src: "item-5.svg", title: "Демо: предмет 5" },
-        { src: "item-6.svg", title: "Демо: предмет 6" },
-        { src: "item-7.svg", title: "Демо: предмет 7", w: 64, h: 72 },
-        { src: "item-8.svg", title: "Демо: предмет 8", w: 64, h: 72 }
+        { src: "item1.png", title: "Памятный предмет (КПВ)" },
+        { src: "item2.png", title: "Памятный предмет (КПВ)" },
+        { src: "item3.png", title: "Памятный предмет (КПВ)" },
+        { src: "item4.png", title: "Памятный предмет (КПВ)" }
       ]
     },
     {
@@ -72,16 +68,11 @@ window.GALLERY = {
       title: "/медальки",
       desc: "Медальки и другие значки",
       layout: "icons",
-      dir: "images/art/demo/",
+      dir: "images/art/small/",
       w: 70,
       h: 70,
       items: [
-        { src: "medal-1.svg", title: "Демо: медалька 1" },
-        { src: "medal-2.svg", title: "Демо: медалька 2" },
-        { src: "medal-3.svg", title: "Демо: медалька 3" },
-        { src: "medal-4.svg", title: "Демо: медалька 4" },
-        { src: "medal-5.svg", title: "Демо: медалька 5" },
-        { src: "medal-6.svg", title: "Демо: медалька 6" }
+        { src: "medal1.svg", title: "«Старательный помощник» (КПВ)" }
       ]
     },
     {
@@ -89,12 +80,16 @@ window.GALLERY = {
       title: "/иллюстрации",
       desc: "Полноразмерные работы",
       layout: "masonry",
-      dir: "images/art/demo/",
+      dir: "images/art/full/",
       pixel: false,
       facts: ["Цена договорная"],
       items: [
-        { src: "illustration-1.svg", title: "Демо: иллюстрация 1", desc: "Описание, дата или инструменты, если нужно.", w: 1200, h: 1600 },
-        { src: "illustration-2.svg", title: "Демо: иллюстрация 2", w: 1600, h: 1000 }
+        { src: "full1.jpg", title: "Аймер ('26)", w: 1853, h: 2560 },
+        { src: "full2.jpg", title: "Рекруты Рока ('26)", w: 2560, h: 1244 },
+        { src: "full3.jpg", title: "Тобиас Нортенмор ('26)", w: 995, h: 1280 },
+        { src: "full4.jpg", title: "Лотерея КПВ ('26)", w: 1280, h: 834 },
+        { src: "full5.jpg", title: "Эйс ('26)", w: 1132, h: 1280 },
+        { src: "full6.jpg", title: "Кеннет Хилл — обложка «Безбрежия Желаний» ('25)", w: 2559, h: 1828 },
       ]
     },
     {
@@ -102,12 +97,12 @@ window.GALLERY = {
       title: "/фоны",
       desc: "Фоны на 1000×1000",
       layout: "tiles",
-      dir: "images/art/demo/",
+      dir: "images/art/back/",
       w: 1000,
       h: 1000,
       items: [
-        { src: "background-1.svg", title: "Демо: фон 1" },
-        { src: "background-2.svg", title: "Демо: фон 2" }
+        { src: "back1.jpg", title: "Ствол дуба" },
+        { src: "back2.jpg", title: "Застрявшие доски" }
       ]
     }
   ]
