@@ -178,7 +178,7 @@
         '<h1 class="hero-title" id="hero-title">' + esc(lib.site.title) + '</h1>' +
         '<p class="hero-tag">' + esc(lib.site.tagline) + '</p>' +
         '<div class="hero-stars" aria-hidden="true">✦ ───── ✧ ───── ✦</div>' +
-      '</section>' +
+      '</section>' + authorCard() +
       '<section class="panel home-panel">' +
         '<div class="panel-label"><span class="panel-light" aria-hidden="true"></span> /directory <span class="panel-count">' + count + ' файлов</span></div>' +
         '<p class="intro">' + esc(lib.site.intro || '') + '</p>' +
@@ -188,7 +188,7 @@
           '<input id="library-search" class="search-input" type="search" placeholder="Название, слово, раздел…" autocomplete="off" spellcheck="false">' +
           randomButton() +
         '</div><div id="search-results" class="search-results" aria-live="polite"></div>' +
-      '</section>' + authorCard();
+      '</section>';
     document.title = lib.site.title + ' — ' + lib.site.tagline;
   }
 
