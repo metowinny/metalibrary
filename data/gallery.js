@@ -21,7 +21,7 @@ window.GALLERY = {
       title: "/костюмы",
       desc: "Костюмы на 200х300",
       layout: "sprites",
-      dir: "images/art/demo/",
+      dir: "images/art/cost/",
       w: 200,
       h: 300,
       facts: ["Дополняющий: от 400р", "Перекрывающий: от 600р"],
@@ -29,16 +29,21 @@ window.GALLERY = {
         {
           title: "Поверх модельки",
           items: [
-            { src: "costume-1.svg", title: "Демо: костюм 1" },
-            { src: "costume-2.svg", title: "Демо: костюм 2" },
-            { src: "costume-3.svg", title: "Демо: костюм 3" }
+            { src: "cost1.png", title: "Сезонный костюм (осень '25)" },
+            { src: "cost2.png", title: "Праздничный костюм (ДР КПВ '26)" },
+            { src: "cost3.png", title: "Сезонный костюм (лето '26)" },
+            { src: "cost4.png", title: "Праздничный костюм (Хэллоуин '26)" },
+            { src: "cost5.png", title: "Праздничный костюм (ДР Вара '26)" },
+            { src: "cost6.png", title: "Праздничный костюм (Хэллоуин '25)" },
+            { src: "cost7.png", title: "Сезонный костюм (весна '26)" }
           ]
         },
         {
           title: "Перекрывающие",
           items: [
-            { src: "costume-4.svg", title: "Демо: костюм 4" },
-            { src: "costume-5.svg", title: "Демо: костюм 5" }
+            { src: "percost1.png", title: "Костюм актёра (Острозуб)" },
+            { src: "percost2.png", title: "Костюм актёра (Орёл)" },
+            { src: "percost3.png", title: "Костюм актёра (Громосказ)" }
           ]
         }
       ]
