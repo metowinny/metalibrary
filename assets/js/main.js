@@ -10,6 +10,7 @@
   const rootEl = document.documentElement;
   let requestToken = 0;
   let reading = false;
+  const art = window.createArt ? window.createArt({ lib: lib, app: app, esc: esc, href: href, list: list, externalURL: externalURL }) : null;
 
   function esc(value) {
     return String(value == null ? '' : value).replace(/[&<>"']/g, function (c) {
@@ -105,8 +106,9 @@
   function card(node, ids, subtitle) {
     const isDir = !!node.children;
     const meta = isDir ? 'внутри: ' + visibleChildren(node).length : (node.meta || 'текст');
-    return '<a class="item ' + (isDir ? 'is-dir' : 'is-text') + '" href="' + href(ids) + '">' +
-      '<span class="item-symbol" aria-hidden="true">' + (isDir ? '▣' : '✎') + '</span>' +
+    const isArt = !!node.gallery || !!node.art;
+    return '<a class="item ' + (isDir ? 'is-dir' : 'is-text') + (isArt ? ' is-art' : '') + '" href="' + href(ids) + '">' +
+      '<span class="item-symbol" aria-hidden="true">' + (node.symbol || (isDir ? '▣' : '✎')) + '</span>' +
       '<span class="item-main"><span class="item-title">' + esc(node.title) + '</span>' +
       (subtitle || node.desc ? '<span class="item-desc">' + esc(subtitle || node.desc) + '</span>' : '') +
       '</span><span class="item-meta">' + esc(meta) + '</span></a>';
@@ -266,10 +268,12 @@
   function route() {
     requestToken++;
     reading = false;
+    if (art) art.close();
     progress.style.width = '0%';
     progress.hidden = true;
     const path = parsePath();
     const chain = resolve(path);
+    document.body.classList.toggle('is-art', !!art && path[0] === 'art');
     if (!chain) {
       crumbs.innerHTML = '';
       renderNotFound();
@@ -277,6 +281,8 @@
       renderCrumbs(chain, path);
       const node = chain[chain.length - 1];
       if (path.length === 0) renderHome();
+      else if (art && node.gallery) art.gallery(node, path);
+      else if (art && node.art) art.hub(node, path);
       else if (node.children) renderSection(node, path);
       else if (node.file) renderText(chain, path);
       else renderNotFound();
@@ -386,6 +392,7 @@
   window.addEventListener('resize', updateProgress);
   window.addEventListener('hashchange', route);
 
+  if (art) art.attach();
   renderShell();
   loadFontSize();
   makeAmbient();
