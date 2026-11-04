@@ -159,7 +159,7 @@
     if (!a) return '';
     const paragraphs = [].concat(a.about || []).filter(Boolean);
     const avatar = a.avatar ? '<img src="' + esc(encodeURI(a.avatar)) + '" alt="' + esc(a.name || '') + '">' : '<span aria-hidden="true">✦</span>';
-    return '<aside class="author-card" aria-label="Об авторе">' +
+    return '<aside class="panel author-card" aria-label="Об авторе">' +
       '<div class="author-avatar">' + avatar + '</div>' +
       '<div class="author-id">' +
         '<div class="author-label">/about</div>' +
