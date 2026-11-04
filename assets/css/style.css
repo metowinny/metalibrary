@@ -1,4 +1,4 @@
-/* outofsite · soft Y2K / personal web archive */
+/* привет */
 :root {
   color-scheme: dark;
   --fs: 1.08rem;
@@ -34,7 +34,6 @@ button { cursor: pointer; }
 :focus-visible { outline: 2px solid #b2f1ff; outline-offset: 4px; }
 ::selection { background: rgba(151, 121, 255, .65); color: white; }
 
-/* Ненавязчивые волны и маленькие светлячки; больших пузырей больше нет. */
 .ambient {
   position: fixed;
   inset: 0;
@@ -79,7 +78,6 @@ button { cursor: pointer; }
 
 .wrap { position: relative; z-index: 1; max-width: 910px; margin: 0 auto; padding: 17px 18px 42px; }
 
-/* Глянцевая полоска, словно панель на старом персональном сайте. */
 .plaque {
   display: flex;
   align-items: center;
@@ -146,7 +144,6 @@ button { cursor: pointer; }
 .crumbs .sep { padding: 0 10px; color: #9a8fda; }
 .crumbs .here { color: #e2e9ff; }
 
-/* Главная — оформление web 1.0, без тяжёлых декоративных шаров. */
 .hero { position: relative; text-align: center; padding: 45px 12px 32px; }
 .eyebrow { margin: 0 0 15px; color: #9dd0ee; font: 400 .65rem/1.8 var(--font-pixel); letter-spacing: 0; }
 .eyebrow.tiny { text-align: center; color: #93b3ea; font-size: .63rem; margin-bottom: 9px; text-transform: uppercase; }
@@ -288,7 +285,6 @@ button { cursor: pointer; }
 .search-caption { color: #b8cbec; font-size: .81rem; margin: 13px 0 4px; }
 .search-results .items { margin-top: 9px; }
 
-/* Читалка: единая Ubuntu-типографика; засечки нигде не используются. */
 .reader { padding: 29px 34px 31px; }
 .reader-kind { margin-bottom: 6px; }
 .reader-head { position: relative; min-height: 53px; padding-bottom: 8px; }
@@ -316,8 +312,7 @@ button { cursor: pointer; }
 .text-body s { opacity: .65; }
 .text-body u { text-decoration-color: #bb9bff; text-underline-offset: 3px; }
 .text-body mark { color: #fff; background: rgba(128,93,244,.44); padding: 0 4px; border-radius: 3px; }
-/* Цензура / redaction: настоящий текст остаётся в HTML и в буфере обмена.
-   При выделении скрытый текст становится виден; это НЕ защита информации. */
+
 .text-body .censor {
   display: inline;
   padding: .045em .17em;
@@ -334,20 +329,20 @@ button { cursor: pointer; }
   text-shadow: none;
   text-decoration-color: transparent;
 }
-/* Выделение показывает текст; при копировании переносится именно текст, не плашка. */
+
 .text-body .censor::selection,
 .text-body .censor *::selection {
   color: #f4faff;
   background: #285b80;
   text-shadow: none;
 }
-/* Опциональный эффект повреждённого файла — чуть заметная пиксельная штриховка. */
+
 .text-body .censor--pixel {
   background:
     repeating-linear-gradient(90deg, transparent 0 6px, rgba(121, 194, 231, .14) 6px 7px, transparent 7px 11px),
     linear-gradient(180deg, #111c2b, #060a17);
 }
-/* Опциональная версия с раскрытием по клику/Enter/пробелу. */
+
 .text-body .censor--click { cursor: pointer; }
 .text-body .censor--click:not(.is-revealed):hover,
 .text-body .censor--click:not(.is-revealed):focus-visible {
@@ -376,7 +371,6 @@ button { cursor: pointer; }
 .text-body ul, .text-body ol { padding-left: 1.5em; margin: 0 0 1em; }
 .text-body li { padding-left: .2em; margin: .25em 0; }
 
-/* Сцены прозы: разрядка, красная строка, крупная буквица первого абзаца. */
 .reader--prose .text-body > p:not(.verse):not(.note):not(.signature) {
   text-align: justify;
   text-align-last: auto;
@@ -384,12 +378,11 @@ button { cursor: pointer; }
   hyphens: auto;
   -webkit-hyphens: auto;
 }
-/* Важна та же специфичность, что у правила красных строк выше:
-   иначе браузер всё равно добавляет отступ перед буквицей. */
+
 .reader--prose .text-body > p:first-of-type:not(.verse):not(.note):not(.signature) {
   text-indent: 0;
 }
-/* Буквица обтекается первыми двумя строками абзаца, а не висит отдельно сбоку. */
+
 .reader--prose .text-body > p:first-of-type:not(.verse):not(.note):not(.signature)::first-letter {
   float: left;
   margin: .08em .13em 0 0;
@@ -400,7 +393,7 @@ button { cursor: pointer; }
   color: #a6eaff;
   text-shadow: 1px 2px rgba(20, 83, 146, .65), 0 0 13px rgba(114, 213, 255, .38);
 }
-/* На малой ширине длинные пробелы при выключке выглядят плохо. */
+
 @media (max-width: 460px) {
   .reader--prose .text-body > p { hyphens: auto; }
   .reader--prose .text-body > p:first-of-type:not(.verse):not(.note):not(.signature)::first-letter {
@@ -410,7 +403,6 @@ button { cursor: pointer; }
   }
 }
 
-/* Небольшой, но заметный декоративный разделитель в духе старых сайтов. */
 .text-body hr, .text-body .divider {
   display: block;
   position: relative;
